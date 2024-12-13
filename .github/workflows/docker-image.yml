@@ -40,4 +40,4 @@ jobs:
                       NODE_VERSION=${{github.event.inputs.node_version}}
                   platforms: linux/amd64,linux/arm64
                   push: true
-                  tags: flowiseai/flowise:${{github.event.inputs.tag_version}}
+                  tags: bentwng/flowise:${{github.event.inputs.tag_version}}

@@ -1,21 +1,6 @@
 name: Docker Image CI
 
 on:
-    push:
-        branches: [main]
-        inputs:
-            node_version:
-                description: 'Node.js version to build this image with.'
-                type: choice
-                required: true
-                default: '20'
-                options:
-                    - '20'
-            tag_version:
-                description: 'Tag version of the image to be pushed.'
-                type: string
-                required: true
-                default: 'latest'
     workflow_dispatch:
         inputs:
             node_version:

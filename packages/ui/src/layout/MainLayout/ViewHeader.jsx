@@ -23,7 +23,7 @@ const ViewHeader = ({
     onSearchChange,
     search,
     searchPlaceholder = 'Search',
-    title = 'Mr.🆖 - Low-code LLM apps builder',
+    title,
     description,
     isBackButton,
     onBack,

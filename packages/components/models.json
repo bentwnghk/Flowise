@@ -454,6 +454,26 @@
             "name": "chatGoogleVertexAI",
             "models": [
                 {
+                    "label": "gemini-2.0-flash-001",
+                    "name": "gemini-2.0-flash-001"
+                },
+                {
+                    "label": "gemini-2.0-flash-exp",
+                    "name": "gemini-2.0-flash-exp"
+                },
+                {
+                    "label": "gemini-2.0-flash-lite-001",
+                    "name": "gemini-2.0-flash-lite-001"
+                },
+                {
+                    "label": "gemini-2.0-flash-lite-preview-02-05",
+                    "name": "gemini-2.0-flash-lite-preview-02-05"
+                },
+                {
+                    "label": "gemini-2.0-flash-thinking-exp-01-21",
+                    "name": "gemini-2.0-flash-thinking-exp-01-21"
+                },
+                {
                     "label": "gemini-1.5-flash-002",
                     "name": "gemini-1.5-flash-002"
                 },
@@ -722,6 +742,26 @@
                 {
                     "label": "gpt-3.5-turbo-16k-0613",
                     "name": "gpt-3.5-turbo-16k-0613"
+                },
+                {
+                    "label": "gemini-2.0-flash-001",
+                    "name": "gemini-2.0-flash-001"
+                },
+                {
+                    "label": "gemini-2.0-flash-exp",
+                    "name": "gemini-2.0-flash-exp"
+                },
+                {
+                    "label": "gemini-2.0-flash-lite-001",
+                    "name": "gemini-2.0-flash-lite-001"
+                },
+                {
+                    "label": "gemini-2.0-flash-lite-preview-02-05",
+                    "name": "gemini-2.0-flash-lite-preview-02-05"
+                },
+                {
+                    "label": "gemini-2.0-flash-thinking-exp-01-21",
+                    "name": "gemini-2.0-flash-thinking-exp-01-21"
                 }
             ]
         },

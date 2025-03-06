@@ -18,7 +18,6 @@ RUN apk add --no-cache \
     harfbuzz \
     # 繁體中文字體
     ttf-arphic-ukai \        # 文鼎PL中楷
-    ttf-arphic-uming \       # 文鼎PL细上海宋
     noto-fonts-cjk \         # 思源字體（覆盖简繁）
     font-noto-cjk-extra \    # 扩展符号
     font-wqy-zenhei \        # 文泉驿正黑

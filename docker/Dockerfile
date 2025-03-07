@@ -12,8 +12,42 @@ RUN npm install -g flowise
 # Stage 2: Runtime stage
 FROM node:20-alpine
 
+# 添加edge仓库获取最新字体包
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+
 # Install runtime dependencies
-RUN apk add --no-cache chromium git python3 py3-pip make g++ build-base cairo-dev pango-dev
+# RUN apk add --no-cache chromium git python3 py3-pip make g++ build-base cairo-dev pango-dev
+RUN apk add --no-cache \
+    chromium \
+    git \
+    python3 \
+    py3-pip \
+    make \
+    g++ \
+    build-base \
+    cairo-dev \
+    pango-dev \
+    nss \
+    freetype \
+    harfbuzz \
+    # 繁体中文专用字体
+    font-arphic-ukai \        # 文鼎PL中楷
+    font-arphic-uming \       # 文鼎PL细上海宋
+    noto-fonts-cjk \          # 思源字体（简繁日韩）
+    font-noto-cjk-extra \     # 扩展符号支持
+    font-wqy-zenhei \         # 文泉驿正黑
+    # 图形库依赖
+    libx11 \
+    libxcomposite \
+    libxdamage \
+    libxext \
+    libxfixes \
+    libxrandr \
+    libxrender \
+    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+# 更新字体缓存
+RUN fc-cache -f
 
 # Set the environment variable for Puppeteer to find Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -21,5 +55,8 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 # Copy Flowise from the build stage
 COPY --from=build /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=build /usr/local/bin /usr/local/bin
+
+# 创建PDF存储目录并设置权限
+RUN mkdir -p /root/.flowise/pdf && chown -R root:root /root/.flowise/pdf
 
 ENTRYPOINT ["flowise", "start"]

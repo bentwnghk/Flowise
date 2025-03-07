@@ -32,7 +32,6 @@ RUN apk add --no-cache \
     harfbuzz \
     # 繁体中文专用字体
     font-arphic-ukai \        # 文鼎PL中楷
-    font-wqy-zenhei \         # 文泉驿正黑
     # 图形库依赖
     libx11 \
     libxcomposite \

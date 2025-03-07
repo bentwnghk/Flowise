@@ -12,6 +12,9 @@ RUN npm install -g flowise
 # Stage 2: Runtime stage
 FROM node:20-alpine
 
+# 安装 pnpm
+RUN npm install -g pnpm@9.1.2  # 必须显式安装
+
 # 添加edge仓库获取最新字体包
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     echo "https://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories

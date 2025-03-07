@@ -46,6 +46,9 @@ RUN apk add --no-cache \
 # 更新字体缓存
 RUN fc-cache -f
 
+# 安装 puppeteer-core
+RUN pnpm add puppeteer-core@21.7.0
+
 # Set the environment variable for Puppeteer to find Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 

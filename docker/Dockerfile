@@ -30,9 +30,7 @@ RUN apk add --no-cache \
     nss \
     freetype \
     harfbuzz \
-    # 繁体中文专用字体
-    font-arphic-ukai \        # 文鼎PL中楷
-    # 图形库依赖
+    font-arphic-ukai \
     libx11 \
     libxcomposite \
     libxdamage \

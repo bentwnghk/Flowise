@@ -1,4 +1,6 @@
 /tests
+/src
+/public
 !build
 
 yarn-debug.log*

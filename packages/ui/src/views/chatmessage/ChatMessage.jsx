@@ -694,11 +694,7 @@ export const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, preview
 
         if (data.followUpPrompts) {
             const followUpPrompts = JSON.parse(data.followUpPrompts)
-            if (typeof followUpPrompts === 'string') {
-                setFollowUpPrompts(JSON.parse(followUpPrompts))
-            } else {
-                setFollowUpPrompts(followUpPrompts)
-            }
+            setFollowUpPrompts(followUpPrompts)
         }
     }
 
@@ -1208,13 +1204,7 @@ export const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, preview
         if (followUpPromptsStatus && messages.length > 0) {
             const lastMessage = messages[messages.length - 1]
             if (lastMessage.type === 'apiMessage' && lastMessage.followUpPrompts) {
-                if (Array.isArray(lastMessage.followUpPrompts)) {
-                    setFollowUpPrompts(lastMessage.followUpPrompts)
-                }
-                if (typeof lastMessage.followUpPrompts === 'string') {
-                    const followUpPrompts = JSON.parse(lastMessage.followUpPrompts)
-                    setFollowUpPrompts(followUpPrompts)
-                }
+                setFollowUpPrompts(lastMessage.followUpPrompts)
             } else if (lastMessage.type === 'userMessage') {
                 setFollowUpPrompts([])
             }

@@ -2209,7 +2209,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
                         <Stack sx={{ flexDirection: 'row', alignItems: 'center', px: 1.5, gap: 0.5 }}>
                             <IconSparkles size={12} />
                             <Typography sx={{ fontSize: '0.75rem' }} variant='body2'>
-                                Try these prompts
+                                Select prompts
                             </Typography>
                         </Stack>
                         <FollowUpPromptsCard

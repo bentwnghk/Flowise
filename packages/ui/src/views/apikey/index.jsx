@@ -372,7 +372,7 @@ const APIKey = () => {
                             search={true}
                             searchPlaceholder='Search API Keys'
                             title='API Keys'
-                            description='Flowise API & SDK authentication keys'
+                            description='Mr.🆖 AI Agents API & SDK authentication keys'
                         >
                             <Button
                                 variant='outlined'

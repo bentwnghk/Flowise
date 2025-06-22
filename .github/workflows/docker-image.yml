@@ -3,19 +3,6 @@ name: Docker Image CI
 on:
     push:
         branches: [main]
-        inputs:
-            node_version:
-                description: 'Node.js version to build this image with.'
-                type: choice
-                required: true
-                default: '20'
-                options:
-                    - '20'
-            tag_version:
-                description: 'Tag version of the image to be pushed.'
-                type: string
-                required: true
-                default: 'latest'
     workflow_dispatch:
         inputs:
             node_version:
@@ -52,7 +39,7 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   build-args: |
-                      NODE_VERSION=${{github.event.inputs.node_version}}
+                      NODE_VERSION=${{ github.event.inputs.node_version || '20' }}
                   platforms: linux/amd64,linux/arm64
                   push: true
-                  tags: bentwng/flowise:${{github.event.inputs.tag_version}}
+                  tags: bentwng/flowise:${{ github.event.inputs.tag_version || 'latest' }}

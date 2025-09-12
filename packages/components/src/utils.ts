@@ -8,7 +8,7 @@ import TurndownService from 'turndown'
 import { DataSource, Equal } from 'typeorm'
 import { ICommonObject, IDatabaseEntity, IFileUpload, IMessage, INodeData, IVariable, MessageContentImageUrl } from './Interface'
 import { AES, enc } from 'crypto-js'
-import { omit } from 'lodash'
+import { omit, get } from 'lodash'
 import { AIMessage, HumanMessage, BaseMessage } from '@langchain/core/messages'
 import { Document } from '@langchain/core/documents'
 import { getFileFromStorage } from './storageUtils'
@@ -18,6 +18,7 @@ import { TextSplitter } from 'langchain/text_splitter'
 import { DocumentLoader } from 'langchain/document_loaders/base'
 import { NodeVM } from '@flowiseai/nodevm'
 import { Sandbox } from '@e2b/code-interpreter'
+import { secureFetch, checkDenyList } from './httpSecurity'
 import JSON5 from 'json5'
 
 export const numberOrExpressionRegex = '^(\\d+\\.?\\d*|{{.*}})$' //return true if string consists only numbers OR expression {{}}
@@ -422,7 +423,7 @@ async function crawl(baseURL: string, currentURL: string, pages: string[], limit
 
     if (process.env.DEBUG === 'true') console.info(`actively crawling ${currentURL}`)
     try {
-        const resp = await fetch(currentURL)
+        const resp = await secureFetch(currentURL)
 
         if (resp.status > 399) {
             if (process.env.DEBUG === 'true') console.error(`error in fetch with status code: ${resp.status}, on page: ${currentURL}`)
@@ -453,6 +454,8 @@ async function crawl(baseURL: string, currentURL: string, pages: string[], limit
  * @returns {Promise<string[]>}
  */
 export async function webCrawl(stringURL: string, limit: number): Promise<string[]> {
+    await checkDenyList(stringURL)
+
     const URLObj = new URL(stringURL)
     const modifyURL = stringURL.slice(-1) === '/' ? stringURL.slice(0, -1) : stringURL
     return await crawl(URLObj.protocol + '//' + URLObj.hostname, modifyURL, [], limit)
@@ -476,7 +479,7 @@ export async function xmlScrape(currentURL: string, limit: number): Promise<stri
     let urls: string[] = []
     if (process.env.DEBUG === 'true') console.info(`actively scarping ${currentURL}`)
     try {
-        const resp = await fetch(currentURL)
+        const resp = await secureFetch(currentURL)
 
         if (resp.status > 399) {
             if (process.env.DEBUG === 'true') console.error(`error in fetch with status code: ${resp.status}, on page: ${currentURL}`)
@@ -1608,4 +1611,51 @@ export const createCodeExecutionSandbox = (
     sandbox['$flow'] = flow
 
     return sandbox
+}
+
+/**
+ * Process template variables in state object, replacing {{ output }} and {{ output.property }} patterns
+ * @param {ICommonObject} state - The state object to process
+ * @param {any} finalOutput - The output value to substitute
+ * @returns {ICommonObject} - The processed state object
+ */
+export const processTemplateVariables = (state: ICommonObject, finalOutput: any): ICommonObject => {
+    if (!state || Object.keys(state).length === 0) {
+        return state
+    }
+
+    const newState = { ...state }
+
+    for (const key in newState) {
+        const stateValue = newState[key].toString()
+        if (stateValue.includes('{{ output') || stateValue.includes('{{output')) {
+            // Handle simple output replacement (with or without spaces)
+            if (stateValue === '{{ output }}' || stateValue === '{{output}}') {
+                newState[key] = finalOutput
+                continue
+            }
+
+            // Handle JSON path expressions like {{ output.updated }} or {{output.updated}}
+            // eslint-disable-next-line
+            const match = stateValue.match(/\{\{\s*output\.([\w\.]+)\s*\}\}/)
+            if (match) {
+                try {
+                    // Parse the response if it's JSON
+                    const jsonResponse = typeof finalOutput === 'string' ? JSON.parse(finalOutput) : finalOutput
+                    // Get the value using lodash get
+                    const path = match[1]
+                    const value = get(jsonResponse, path)
+                    newState[key] = value ?? stateValue // Fall back to original if path not found
+                } catch (e) {
+                    // If JSON parsing fails, keep original template
+                    newState[key] = stateValue
+                }
+            } else {
+                // Handle simple {{ output }} replacement for backward compatibility
+                newState[key] = newState[key].replaceAll('{{ output }}', finalOutput)
+            }
+        }
+    }
+
+    return newState
 }

@@ -54,7 +54,7 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   push: true
                   tags: |
-                      flowiseai/flowise:${{ steps.defaults.outputs.tag_version }}
+                      bentwng/flowise:${{ steps.defaults.outputs.tag_version }}
 
             # -------------------------
             # Build and push worker image
@@ -69,4 +69,4 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   push: true
                   tags: |
-                      flowiseai/flowise-worker:${{ steps.defaults.outputs.tag_version }}
+                      bentwng/flowise-worker:${{ steps.defaults.outputs.tag_version }}
